@@ -95,4 +95,14 @@ resource "aws_elb" "example" {
     instance_port = "8080"
     instance_protocol = "http"
   }
+# Creating elastic ip
+resource "aws_eip" "server_dev1_eip1" {
+  count = length(aws_instance.web)
+
+  instance = aws_instance.web.*.id[count.index]
+  vpc      = true
+  lifecycle {
+    prevent_destroy = true
+  }
+}
 }
